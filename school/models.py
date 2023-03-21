@@ -1,3 +1,22 @@
 from django.db import models
 
-# Create your models here.
+class Student(models.Model):
+    name = models.CharField(max_length=64)
+    document_number = models.CharField(max_length=11)
+    birth_date = models.DateField()
+
+    def __str__(self):
+        return self.name
+
+class Course(models.Model):
+    LEVEL = (
+        ('B', 'Basis'),
+        ('I', 'Intermediate'),
+        ('A', 'Advanced')
+    )
+    name = models.CharField(max_length=32)
+    description = models.CharField(max_length=128)
+    level = models.CharField(max_length=1, choices=LEVEL, blank=False, default='B')
+
+    def __str__(self):
+        return self.name
