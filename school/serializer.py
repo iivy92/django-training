@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from school.models import Student, Course, Registration
+from school.validators import *
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -7,16 +8,15 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ('id', 'name', 'document_number', 'birth_date')
     
-    def validate_document_number(self, document_number):
-        if len(document_number) != 11:
-            raise serializers.ValidationError("Document Number must be 11 characters")
-        return document_number
+    def validate(self, data):
+        if not valid_document_number(data['document_number']):
+            raise serializers.ValidationError({'document_number': "Document Number must be 11 characters"})
 
-    def validate_name(self, name):
-        if not name.isalpha():
-            raise serializers.ValidationError("Name must contain only alphabetic characters ")
-
-        return name
+        if not valid_name(data['name']):
+            raise serializers.ValidationError({'name': "Name must contain only alphabetic characters"})
+        
+        return data
+    
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
