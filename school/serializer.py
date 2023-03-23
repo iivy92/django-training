@@ -6,7 +6,17 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ('id', 'name', 'document_number', 'birth_date')
+    
+    def validate_document_number(self, document_number):
+        if len(document_number) != 11:
+            raise serializers.ValidationError("Document Number must be 11 characters")
+        return document_number
 
+    def validate_name(self, name):
+        if not name.isalpha():
+            raise serializers.ValidationError("Name must contain only alphabetic characters ")
+
+        return name
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
