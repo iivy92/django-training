@@ -6,7 +6,7 @@ from school.validators import *
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ('id', 'name', 'document_number', 'birth_date')
+        fields = '__all__'
     
     def validate(self, data):
         if not valid_document_number(data['document_number']):
